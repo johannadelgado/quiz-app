@@ -57,5 +57,3 @@ def main():
     info_list = read_file("italyquiz.csv")
     new_info_list = shuffle_questions(info_list)
     send_questions(new_info_list)
-
-main()
