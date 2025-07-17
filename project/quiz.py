@@ -14,14 +14,15 @@
 
 import csv
 import random
+from project.main_quiz import *
 
 def read_file(csv_file):
     info_list = []
-    infile = open(csv_file)
+    infile = open(csv_file, encoding = "utf-8")
     csvreader = csv.reader(infile)
     for line in csvreader:
         if line[0][0] != "#":
-            q_dict = {"Question": line[0], "Options": line[1:5], "Answer": line[5]}
+            q_dict = {"Question": line[0], "Options": line[1:], "Answer": line[4]}
             info_list.append(q_dict)
     return info_list
 
@@ -37,6 +38,7 @@ def send_questions(info_list):
     for dicts in info_list:
         print(dicts["Question"])
         options = dicts["Options"]
+        random.shuffle(options)
         print("1: "+options[0])
         print("2: "+options[1])
         print("3: "+options[2])
@@ -54,6 +56,11 @@ def send_questions(info_list):
 
 
 def main():
-    info_list = read_file("italyquiz.csv")
+    quizjson = choose_quiz()
+    quizdata = create_info_list(quizjson)
+    csv_file = write_csv(quizdata)
+    info_list = read_file(csv_file)
     new_info_list = shuffle_questions(info_list)
     send_questions(new_info_list)
+
+main()
